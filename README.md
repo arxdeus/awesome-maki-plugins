@@ -31,7 +31,6 @@ Tools that help you navigate, remember, and move around large sessions.
 
 Plugins that keep the agent working toward an objective or coordinate several agents.
 
-- [maki-goal](https://github.com/g4bwy/maki-goal) - Long-running goal management. It keeps an objective alive across turns. Ported from [pi-goal](https://github.com/capyup/pi-goal) and [pi-goal-x](https://github.com/tmonk/pi-goal-x).
 - [maki-essential-plugins](https://github.com/laudney/maki-essential-plugins) - A bundle. `/goal` keeps an objective active and asks the agent to continue when a turn ends early. `monitor` watches a long-running command and can wake the agent on a matching line or on exit. `/provider` switches provider and model without re-entering keys. Works on upstream Maki 0.6.0 and later.
 - [maki-peer](https://github.com/lu-zero/maki-peer) - Lets several agent instances run together and exchange messages. Supports Maki, OpenCode, Grok, and Vibe peers.
 
