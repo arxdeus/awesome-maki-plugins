@@ -24,14 +24,16 @@ Tools that help you navigate, remember, and move around large sessions.
 - [retitle](https://github.com/g4bwy/maki-plugins/tree/master/retitle) - Generates a readable title for each session, so the session picker stops showing truncated first prompts. Uses your current model, with no tier changes.
 - [toc](https://github.com/g4bwy/maki-plugins/tree/master/toc) - Opens a table-of-contents pane with headlines for each turn, thinking block, and reply. Lets you jump through a long session instead of scrolling.
 - [maki-session-index](https://github.com/zipadoodlez/maki-session-index) - Lets the agent search your past sessions. `session_index` greps a normalized outline and returns a short window around each hit. `session_read` expands the newest messages of one session. Read-only, one Lua file, no core changes.
-- [sdroege/maki-plugins](https://github.com/sdroege/maki-plugins/) - Two plugins: per-session notes, and a history reader that lets the model recall earlier turns after compaction. The notes plugin nudges the model to save state at 40, 60, and 80 percent of the context window. Currently needs a few unmerged core changes.
+- [notes](https://github.com/sdroege/maki-plugins/tree/main/notes) - Adds a `notes` tool and a `/notes` picker. The model saves session state that must survive compaction, and the plugin nudges it to write notes at 40, 60, and 80 percent of the context window. Ships in [maki-plugins](https://github.com/sdroege/maki-plugins), needs a few unmerged core changes.
+- [history](https://github.com/sdroege/maki-plugins/tree/main/history) - Adds a `history` tool. The model reads its own session transcript: the current window, archived pre-compaction windows, and subagent transcripts, without touching session files on disk. Ships in [maki-plugins](https://github.com/sdroege/maki-plugins), needs a few unmerged core changes.
 - [replay](https://github.com/g4bwy/maki-plugins/tree/master/replay) - Exports session logs to a format that [claude-replay](https://github.com/es617/claude-replay) can play back.
 
 ## Agent behavior and autonomy
 
 Plugins that keep the agent working toward an objective or coordinate several agents.
 
-- [maki-essential-plugins](https://github.com/laudney/maki-essential-plugins) - A bundle. `/goal` keeps an objective active and asks the agent to continue when a turn ends early. `monitor` watches a long-running command and can wake the agent on a matching line or on exit. `/provider` switches provider and model without re-entering keys. Works on upstream Maki 0.6.0 and later.
+- [goal](https://github.com/laudney/maki-essential-plugins/blob/main/plugin/goal.lua) - Keeps an objective alive across turns. When a turn ends while the goal is active, the agent is asked to continue, and it can mark the goal complete or blocked with a summary. `/goal pause|resume|clear`, saved per session. Ships in [maki-essential-plugins](https://github.com/laudney/maki-essential-plugins), tested on upstream Maki 0.6.0 and main.
+- [monitor](https://github.com/laudney/maki-essential-plugins/blob/main/plugin/monitor.lua) - Watches a long-running command in the background. A matching line or the command's exit can wake the agent, or wait in the session mailbox until the next turn. `/monitors` lists and stops them. Ships in [maki-essential-plugins](https://github.com/laudney/maki-essential-plugins).
 - [maki-peer](https://github.com/lu-zero/maki-peer) - Lets several agent instances run together and exchange messages. Supports Maki, OpenCode, Grok, and Vibe peers.
 
 ## Web search and fetch
@@ -44,11 +46,12 @@ Replacements and additions for the built-in search and fetch tools.
 
 ## Providers and auth
 
-Plugins that connect Maki to a subscription instead of a pay-per-token API key.
+Plugins that switch providers, or connect Maki to a subscription instead of a pay-per-token API key.
 
 - [maki-claude](https://github.com/bzzimmy/maki-claude) - Lets Maki use a Claude Pro or Max subscription. A Python provider script handles the OAuth login and refreshes tokens. A small Lua plugin installs the script and adds a status command.
 - [maki-claude-oauth](https://github.com/arxdeus/maki-claude-oauth) - A dynamic provider that reuses the OAuth session from your main Claude Code install. No separate Anthropic API key and no second browser login.
 - [maki-antigravity](https://github.com/bzzimmy/maki-antigravity) - Lets Maki use a Google AI Pro / Antigravity subscription. The author uses it mainly for a cheap, fast research subagent.
+- [provider](https://github.com/laudney/maki-essential-plugins/blob/main/plugin/provider.lua) - A provider and model picker. Log in to each provider once, then switch without logging out or re-entering API keys. `/provider`, `/provider zai`, or `/provider anthropic/claude-sonnet-4-6`. A change during an active run takes effect on the next run. Ships in [maki-essential-plugins](https://github.com/laudney/maki-essential-plugins).
 
 > These subscription bridges may break the terms of service of the provider. Read the provider terms before you rely on one.
 
@@ -83,6 +86,7 @@ Starting points for writing your own plugin.
 ## Conventions
 
 - Each entry links to source you can read before you install.
+- When one repository ships several plugins, each plugin gets its own entry, and the entry names the repository.
 - Plugins are community work. Review the code before you grant it permissions.
 - A single-file plugin that shows an author name is the author's own gist or repo.
 - Descriptions come from what the author posted in [discussion #452](https://github.com/tontinton/maki/discussions/452).
